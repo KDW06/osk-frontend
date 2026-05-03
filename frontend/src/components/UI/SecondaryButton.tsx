@@ -7,11 +7,15 @@ type SecondaryButtonProps = {
   className?: string;
 };
 
-const SecondaryButton = ({ to, children, className = "" }: SecondaryButtonProps) => {
+const SecondaryButton = ({
+  to,
+  children,
+  className = "",
+}: SecondaryButtonProps) => {
   return (
     <NavLink
       to={to}
-      className={`inline-flex items-center justify-center px-6 py-3 border border-blue-500 text-blue-500 rounded-full  font-medium hover:bg-primary-colour hover:border-none hover:text-white  hover:scale-95 transition-all ${className}`}
+      className={`inline-flex items-center justify-center px-4 py-1.5 text-[13px] md:text-base md:px-6 md:py-3 border border-blue-500 text-blue-500 rounded-full  font-medium hover:bg-primary-colour hover:border-none hover:text-white  hover:scale-95 transition-all ${className}`}
     >
       {children}
     </NavLink>
