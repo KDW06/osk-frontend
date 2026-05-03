@@ -2,11 +2,43 @@ import { useState, useCallback } from "react";
 import { NavLink } from "react-router";
 import useEmblaCarousel from "embla-carousel-react";
 import CountUp from "react-countup";
-import { Laptop, Palette, FileText, Users, ChevronLeft, ChevronRight, Quote, GitMerge, UserPlus, GitPullRequest, Zap, ArrowRight, ArrowUpRight, Calendar, Clock, MapPin, Plus, Minus, } from "lucide-react";
+import {
+  Laptop,
+  Palette,
+  FileText,
+  Users,
+  ChevronLeft,
+  ChevronRight,
+  Quote,
+  GitMerge,
+  UserPlus,
+  GitPullRequest,
+  Zap,
+  ArrowRight,
+  ArrowUpRight,
+  Calendar,
+  Clock,
+  MapPin,
+  Plus,
+  Minus,
+} from "lucide-react";
 import { useAutoPlay } from "@/hooks";
 import { PROJECTS, MARQUEE_PARTNERS } from "@/constants";
-import { HERO_STATS, CONTRIBUTION_SLIDES, EXPLORE_LINKS, HOME_EVENTS, TESTIMONIALS, CTA_ACTIVITY, CTA_STATS, FAQ_ITEMS } from "@/constants";
-import type { ContributionType, HomeEventType, ActivityIconKey } from "@/constants";
+import {
+  HERO_STATS,
+  CONTRIBUTION_SLIDES,
+  EXPLORE_LINKS,
+  HOME_EVENTS,
+  TESTIMONIALS,
+  CTA_ACTIVITY,
+  CTA_STATS,
+  FAQ_ITEMS,
+} from "@/constants";
+import type {
+  ContributionType,
+  HomeEventType,
+  ActivityIconKey,
+} from "@/constants";
 
 // ── Assets
 import heroImage from "@/assets/images/HeroImage.jpeg";
@@ -47,22 +79,31 @@ const EVENT_TYPE_STYLES: Record<HomeEventType, string> = {
 const PROJECT_IMAGES: Record<string, string> = {
   "kigali-community-hub": youthImg,
   "edutrack-rwanda": peopleImg2,
-  "afyaconnect": smartImg,
+  afyaconnect: smartImg,
   "openrwanda-map": mapImg,
 };
 
 // Marquee animation duration
 const MARQUEE_DURATION = "30s";
-const MARQUEE_TRACK = [...MARQUEE_PARTNERS, ...MARQUEE_PARTNERS, ...MARQUEE_PARTNERS];
+const MARQUEE_TRACK = [
+  ...MARQUEE_PARTNERS,
+  ...MARQUEE_PARTNERS,
+  ...MARQUEE_PARTNERS,
+];
 
 // ─── Page
 const HomePage = () => {
   // Testimonials auto-play
-  const { current, paused, next, prev, goTo, setPaused } =
-    useAutoPlay({ length: TESTIMONIALS.length, interval: 4000 });
+  const { current, paused, next, prev, goTo, setPaused } = useAutoPlay({
+    length: TESTIMONIALS.length,
+    interval: 4000,
+  });
 
   // Contribution carousel
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start" });
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+  });
   const [emblaIndex, setEmblaIndex] = useState(0);
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -71,8 +112,9 @@ const HomePage = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Visible testimonials
-  const visibleTestimonials = Array.from({ length: 3 }, (_, i) =>
-    TESTIMONIALS[(current + i) % TESTIMONIALS.length]
+  const visibleTestimonials = Array.from(
+    { length: 3 },
+    (_, i) => TESTIMONIALS[(current + i) % TESTIMONIALS.length],
   );
 
   // Projects for homepage (first 4)
@@ -91,25 +133,25 @@ const HomePage = () => {
         <div className="absolute inset-0 -z-10 bg-gray-950/75" />
 
         {/* Content */}
-        <div className="z-10 h-full pt-24 md:pt-32 px-4 md:px-20 space-y-8">
-          <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-6xl leading-snug text-white font-bold max-w-3xl">
-            Empowering Rwanda to Build
-            <span>Future of Open Source</span>
+        <div className="z-10 h-full pt-28 md:pt-34 px-4 md:px-20 space-y-8">
+          <h1 className="text-3xl text-center sm:text-start sm:text-3xl md:text-4xl lg:text-6xl leading-snug text-white font-bold max-w-3xl">
+            Empowering Rwanda <br className="sm:hidden " />
+            to Build the{" "}
+            <span>
+              Future <br className="sm:hidden " />
+              of Open Source
+            </span>
           </h1>
 
-          <p className="text-white/90 font-medium text-base sm:text-base md:text-xl leading-relaxed max-w-2xl">
-            OSK unites developers, designers, and tech enthusiasts to contribute to
-            open-source projects locally and globally. Join us in turning the next
-            billion users into the next billion creators.
+          <p className="text-white/90 text-center sm:text-start font-medium text-base sm:text-base md:text-xl leading-relaxed max-w-2xl">
+            OSK unites developers, designers, and tech enthusiasts to contribute
+            to open-source projects locally and globally. Join us in turning the
+            next billion users into the next billion creators.
           </p>
 
-          <div className="flex flex-wrap gap-4 md:gap-6 justify-center md:justify-start mt-16">
-            <PrimaryButton to=''>
-              Join the community
-            </PrimaryButton>
-            <SecondaryButton to='/about'>
-              Know More About Us
-            </SecondaryButton>
+          <div className="flex flex-col items-center gap-4 md:gap-6 justify-center md:justify-start mt-16">
+            <PrimaryButton to="">Join the Community</PrimaryButton>
+            <SecondaryButton to="/about">About Us</SecondaryButton>
           </div>
 
           {/* Stats — from HERO_STATS constant */}
@@ -117,8 +159,11 @@ const HomePage = () => {
             {HERO_STATS.map((stat, index) => (
               <div
                 key={stat.label}
-                className={`flex-1 min-w-20 py-4 ${index !== HERO_STATS.length - 1 ? "md:border-r border-gray-300" : ""
-                  } text-center md:text-left`}
+                className={`flex-1 min-w-20 py-4 ${
+                  index !== HERO_STATS.length - 1
+                    ? "md:border-r border-gray-300"
+                    : ""
+                } text-center md:text-left`}
               >
                 <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
                   <CountUp end={stat.number} duration={5} separator="," />
@@ -135,7 +180,6 @@ const HomePage = () => {
       {/* ABOUT STRIP */}
       <section className="py-16 md:py-28 px-4 md:px-20 bg-white">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8">
-
           {/* Left */}
           <div className="w-full md:w-1/2">
             <EyebrowLabel text="About Us" align="left" className="mb-4" />
@@ -147,9 +191,7 @@ const HomePage = () => {
               and tech enthusiasts working together to empower Rwandans to
               contribute to open-source projects locally and globally.
             </p>
-            <SecondaryButton to='/about'>
-              Learn More
-            </SecondaryButton>
+            <SecondaryButton to="/about">Learn More</SecondaryButton>
           </div>
 
           {/* Right */}
@@ -161,7 +203,6 @@ const HomePage = () => {
             />
           </div>
         </div>
-
       </section>
 
       {/* FEATURED PROJECTS */}
@@ -172,7 +213,10 @@ const HomePage = () => {
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
               Featured Open Source Projects
             </h2>
-            <NavLink to="/projects" className="text-blue-500 hover:underline text-base md:text-lg">
+            <NavLink
+              to="/projects"
+              className="text-blue-500 hover:underline text-base md:text-lg"
+            >
               View All Projects
             </NavLink>
           </div>
@@ -188,10 +232,14 @@ const HomePage = () => {
               <div className="absolute inset-0 md:hidden bg-black opacity-25" />
             </div>
             <div className="md:w-1/2 p-6 sm:p-8 md:p-10 flex flex-col justify-center bg-white z-10">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3 text-brand-950">{featuredProject.title}</h3>
-              <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base md:text-lg">{featuredProject.description}</p>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3 text-brand-950">
+                {featuredProject.title}
+              </h3>
+              <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base md:text-lg">
+                {featuredProject.description}
+              </p>
               <div className="flex gap-3 sm:gap-4 flex-wrap">
-                <PrimaryButton to='' className="w-full md:w-auto">
+                <PrimaryButton to="" className="w-full md:w-auto">
                   Contribute
                 </PrimaryButton>
                 <SecondaryButton to="" className="w-full md:w-auto">
@@ -216,13 +264,17 @@ const HomePage = () => {
                   />
                 </div>
                 <div className="p-5 flex flex-col flex-1">
-                  <h4 className="font-semibold mb-3 text-base sm:text-lg text-gray-900">{project.title}</h4>
-                  <p className="text-gray-600 text-sm mb-4 flex-1">{project.description}</p>
-                  <div className="flex gap-3 flex-wrap my-3">
-                    <PrimaryButton to='' className="w-full mb-2">
+                  <h4 className="font-semibold mb-3 text-base sm:text-lg text-gray-900">
+                    {project.title}
+                  </h4>
+                  <p className="text-gray-600 text-sm mb-4 flex-1">
+                    {project.description}
+                  </p>
+                  <div className="flex gap-2.5 sm:gap-3 flex-wrap my-3">
+                    <PrimaryButton to="" className="w-full">
                       Contribute
                     </PrimaryButton>
-                    <SecondaryButton to='' className="w-full">
+                    <SecondaryButton to="" className="w-full">
                       View Project
                     </SecondaryButton>
                   </div>
@@ -241,9 +293,9 @@ const HomePage = () => {
             Ways you can get involved and shape the open source community
           </h2>
           <p className="mt-6 text-base md:text-lg text-gray-500 max-w-2xl mx-auto mb-12">
-            Whether you code, design, write, or mentor, there's a place for you in
-            the open source community. Explore opportunities to contribute, grow
-            your skills, and make meaningful impact.
+            Whether you code, design, write, or mentor, there's a place for you
+            in the open source community. Explore opportunities to contribute,
+            grow your skills, and make meaningful impact.
           </p>
 
           {/* Embla Carousel — from CONTRIBUTION_SLIDES constant */}
@@ -261,10 +313,14 @@ const HomePage = () => {
                         <div className="text-blue-500 mb-4">
                           {CONTRIBUTION_ICONS[slide.type]}
                         </div>
-                        <h3 className="text-2xl font-semibold text-gray-900 mb-4">{slide.title}</h3>
-                        <p className="text-gray-700 leading-relaxed">{slide.description}</p>
+                        <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                          {slide.title}
+                        </h3>
+                        <p className="text-gray-700 leading-relaxed">
+                          {slide.description}
+                        </p>
                       </div>
-                      <SecondaryButton to=''>
+                      <SecondaryButton to="">
                         Contribution Guide
                       </SecondaryButton>
                     </div>
@@ -291,8 +347,9 @@ const HomePage = () => {
                       setEmblaIndex(index);
                     }}
                     aria-label={`Go to slide ${index + 1}`}
-                    className={`w-3 h-3 rounded-full transition-colors ${index === emblaIndex ? "bg-blue-500" : "bg-gray-300"
-                      }`}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      index === emblaIndex ? "bg-blue-500" : "bg-gray-300"
+                    }`}
                   />
                 ))}
               </div>
@@ -310,10 +367,10 @@ const HomePage = () => {
 
       {/* EXPLORE / CONNECT */}
       <section className="bg-[#FFF7F5] py-20 px-4 md:px-20">
-        <EyebrowLabel text='Connect, Contribute and Learn' className="mb-4" />
+        <EyebrowLabel text="Connect, Contribute and Learn" className="mb-4" />
         {/* Nav pills — from EXPLORE_LINKS constant */}
         <div className="flex flex-wrap justify-center items-center mb-16 gap-4 md:gap-8">
-          {EXPLORE_LINKS.map((link) => (
+          {EXPLORE_LINKS.map((link) =>
             link.variant === "primary" ? (
               <PrimaryButton
                 key={link.to}
@@ -330,8 +387,8 @@ const HomePage = () => {
               >
                 {link.label}
               </SecondaryButton>
-            )
-          ))}
+            ),
+          )}
         </div>
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -340,14 +397,13 @@ const HomePage = () => {
               Explore how you can connect, contribute and grow with us.
             </h2>
             <p className="text-base md:text-lg text-gray-500">
-              Join a vibrant community of developers, designers and tech enthusiasts.
-              Connect, collaborate, and build meaningful open-source projects together.
-              Meet like-minded creators, share ideas, and grow through open source while
-              creating solutions with local and global impact.
+              Join a vibrant community of developers, designers and tech
+              enthusiasts. Connect, collaborate, and build meaningful
+              open-source projects together. Meet like-minded creators, share
+              ideas, and grow through open source while creating solutions with
+              local and global impact.
             </p>
-            <SecondaryButton to='/community'>
-              Learn More →
-            </SecondaryButton>
+            <SecondaryButton to="/community">Learn More →</SecondaryButton>
           </div>
           <div className="rounded-2xl overflow-hidden shadow-lg">
             <img
@@ -364,12 +420,15 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap justify-between items-center mb-12 gap-4">
             <div>
-              <EyebrowLabel text='Community Events' align='left' />
+              <EyebrowLabel text="Community Events" align="left" />
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
                 Upcoming Events & Activities
               </h2>
             </div>
-            <NavLink to="/event" className="text-blue-500 hover:underline text-sm md:text-lg">
+            <NavLink
+              to="/event"
+              className="text-blue-500 hover:underline text-sm md:text-lg"
+            >
               View All Events
             </NavLink>
           </div>
@@ -378,37 +437,54 @@ const HomePage = () => {
           <div className="bg-white rounded-2xl shadow-md overflow-hidden mb-8 border border-gray-100">
             <div className="md:flex">
               <div className="md:w-2/3 p-6 sm:p-8 md:p-10">
-                <span className={`text-xs font-semibold px-3 py-1 rounded-full ${EVENT_TYPE_STYLES[HOME_EVENTS[0].type]}`}>
+                <span
+                  className={`text-xs font-semibold px-3 py-1 rounded-full ${EVENT_TYPE_STYLES[HOME_EVENTS[0].type]}`}
+                >
                   {HOME_EVENTS[0].tag}
                 </span>
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mt-4 mb-3">
                   {HOME_EVENTS[0].title}
                 </h3>
-                <p className="text-gray-500 text-sm sm:text-base mb-6">{HOME_EVENTS[0].description}</p>
+                <p className="text-gray-500 text-sm sm:text-base mb-6">
+                  {HOME_EVENTS[0].description}
+                </p>
                 <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-8">
                   <span className="flex items-center gap-1.5">
-                    <Calendar size={14} className="text-blue-500" /> {HOME_EVENTS[0].date}
+                    <Calendar size={14} className="text-blue-500" />{" "}
+                    {HOME_EVENTS[0].date}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Clock size={14} className="text-blue-500" /> {HOME_EVENTS[0].time}
+                    <Clock size={14} className="text-blue-500" />{" "}
+                    {HOME_EVENTS[0].time}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <MapPin size={14} className="text-blue-500" /> {HOME_EVENTS[0].location}
+                    <MapPin size={14} className="text-blue-500" />{" "}
+                    {HOME_EVENTS[0].location}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <PrimaryButton to='' className="w-full md:w-auto mb-3 md:mb-0">
+                  <PrimaryButton
+                    to=""
+                    className="w-full md:w-auto mb-3 md:mb-0"
+                  >
                     Register Now
                   </PrimaryButton>
-                  <SecondaryButton to='' className="w-full md:w-auto mb-3 md:mb-0">
+                  <SecondaryButton
+                    to=""
+                    className="w-full md:w-auto mb-3 md:mb-0"
+                  >
                     Learn More
                   </SecondaryButton>
                 </div>
               </div>
               <div className="md:w-1/3 bg-blue-500 flex flex-col items-center justify-center p-10 text-white text-center">
                 <p className="text-6xl font-bold">48h</p>
-                <p className="mt-2 text-lg font-medium opacity-90">Build Challenge</p>
-                <p className="mt-4 text-sm opacity-75">Open to all skill levels</p>
+                <p className="mt-2 text-lg font-medium opacity-90">
+                  Build Challenge
+                </p>
+                <p className="mt-4 text-sm opacity-75">
+                  Open to all skill levels
+                </p>
               </div>
             </div>
           </div>
@@ -420,23 +496,34 @@ const HomePage = () => {
                 key={event.id}
                 className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col hover:shadow-md transition-shadow"
               >
-                <span className={`text-xs font-semibold px-3 py-1 rounded-full w-fit ${EVENT_TYPE_STYLES[event.type]}`}>
+                <span
+                  className={`text-xs font-semibold px-3 py-1 rounded-full w-fit ${EVENT_TYPE_STYLES[event.type]}`}
+                >
                   {event.tag}
                 </span>
-                <h4 className="text-base sm:text-lg font-semibold text-gray-900 mt-4 mb-2">{event.title}</h4>
-                <p className="text-gray-500 text-sm flex-1 mb-4">{event.description}</p>
+                <h4 className="text-base sm:text-lg font-semibold text-gray-900 mt-4 mb-2">
+                  {event.title}
+                </h4>
+                <p className="text-gray-500 text-sm flex-1 mb-4">
+                  {event.description}
+                </p>
                 <div className="flex flex-col gap-1.5 text-xs text-gray-400">
                   <span className="flex items-center gap-1.5">
-                    <Calendar size={12} className="text-blue-400" /> {event.date}
+                    <Calendar size={12} className="text-blue-400" />{" "}
+                    {event.date}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Clock size={12} className="text-blue-400" /> {event.time}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <MapPin size={12} className="text-blue-400" /> {event.location}
+                    <MapPin size={12} className="text-blue-400" />{" "}
+                    {event.location}
                   </span>
                 </div>
-                <NavLink to="/event" className="mt-5 text-sm text-blue-500 font-medium hover:underline">
+                <NavLink
+                  to="/event"
+                  className="mt-5 text-sm text-blue-500 font-medium hover:underline"
+                >
                   RSVP →
                 </NavLink>
               </div>
@@ -454,7 +541,8 @@ const HomePage = () => {
               What Our Contributors Say
             </h2>
             <p className="mt-4 text-gray-500 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-              Real stories from real people who've grown through Open Source Kigali.
+              Real stories from real people who've grown through Open Source
+              Kigali.
             </p>
           </div>
 
@@ -467,8 +555,13 @@ const HomePage = () => {
             {visibleTestimonials.map((t, i) => (
               <div
                 key={`${t.id}-${current}-${i}`}
-                className={`bg-gray-50 rounded-2xl p-6 sm:p-8 flex flex-col gap-4 ${i === 0 ? "flex" : i === 1 ? "hidden md:flex" : "hidden lg:flex"
-                  }`}
+                className={`bg-gray-50 rounded-2xl p-6 sm:p-8 flex flex-col gap-4 ${
+                  i === 0
+                    ? "flex"
+                    : i === 1
+                      ? "hidden md:flex"
+                      : "hidden lg:flex"
+                }`}
               >
                 <Quote size={28} style={{ color: "#5b9fff" }} />
                 <p className="text-gray-700 text-sm sm:text-base leading-relaxed flex-1">
@@ -518,7 +611,9 @@ const HomePage = () => {
                       className="h-full rounded-full"
                       style={{
                         background: "#2b7fff",
-                        animation: paused ? "none" : "osk-dot-progress 4000ms linear forwards",
+                        animation: paused
+                          ? "none"
+                          : "osk-dot-progress 4000ms linear forwards",
                       }}
                     />
                   )}
@@ -544,7 +639,10 @@ const HomePage = () => {
       </section>
 
       {/* PARTNERS MARQUEE */}
-      <section className="py-16 overflow-hidden" style={{ background: "#f0f6ff" }}>
+      <section
+        className="py-16 overflow-hidden"
+        style={{ background: "#f0f6ff" }}
+      >
         <div className="max-w-7xl mx-auto px-6 md:px-20 mb-10">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <div>
@@ -556,12 +654,10 @@ const HomePage = () => {
               </h2>
             </div>
             <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <PrimaryButton to='' >
+              <PrimaryButton to="">
                 Become a partner <ArrowUpRight size={14} />
               </PrimaryButton>
-              <SecondaryButton to='/partners'>
-                Learn more
-              </SecondaryButton>
+              <SecondaryButton to="/partners">Learn more</SecondaryButton>
             </div>
           </div>
         </div>
@@ -570,15 +666,21 @@ const HomePage = () => {
         <div className="relative">
           <div
             className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-            style={{ background: "linear-gradient(to right, #f0f6ff, transparent)" }}
+            style={{
+              background: "linear-gradient(to right, #f0f6ff, transparent)",
+            }}
           />
           <div
             className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-            style={{ background: "linear-gradient(to left, #f0f6ff, transparent)" }}
+            style={{
+              background: "linear-gradient(to left, #f0f6ff, transparent)",
+            }}
           />
           <div
             className="flex gap-10 w-max"
-            style={{ animation: `osk-marquee ${MARQUEE_DURATION} linear infinite` }}
+            style={{
+              animation: `osk-marquee ${MARQUEE_DURATION} linear infinite`,
+            }}
           >
             {MARQUEE_TRACK.map((partner, i) => (
               <a
@@ -617,13 +719,21 @@ const HomePage = () => {
             style={{ borderColor: "#c5d9ff" }}
           >
             {[
-              { n: `${MARQUEE_PARTNERS.length}+`, label: "Partner organisations" },
+              {
+                n: `${MARQUEE_PARTNERS.length}+`,
+                label: "Partner organisations",
+              },
               { n: "3", label: "Universities" },
               { n: "40+", label: "Contributors from partners" },
               { n: "2", label: "Government partnerships" },
             ].map((s) => (
               <div key={s.label} className="flex items-baseline gap-1.5">
-                <span className="text-xl font-black" style={{ color: "#2b7fff" }}>{s.n}</span>
+                <span
+                  className="text-xl font-black"
+                  style={{ color: "#2b7fff" }}
+                >
+                  {s.n}
+                </span>
                 <span className="text-sm text-gray-400">{s.label}</span>
               </div>
             ))}
@@ -641,7 +751,6 @@ const HomePage = () => {
       {/* FAQ */}
       <section className="py-20 px-4 md:px-20 bg-gray-50">
         <div className="max-w-3xl mx-auto">
-
           {/* Badge */}
           <div className="flex justify-center mb-5">
             <span className="inline-block px-4 py-1.5 rounded-full border border-primary-colour/40 bg-primary-colour/10 text-primary-colour text-xs font-semibold tracking-widest uppercase">
@@ -656,8 +765,8 @@ const HomePage = () => {
 
           {/* Subtitle */}
           <p className="text-center text-gray-500 text-base md:text-lg mb-12">
-            Everything you need to know about joining OSK, contributing to projects,
-            and what to expect from the community.
+            Everything you need to know about joining OSK, contributing to
+            projects, and what to expect from the community.
           </p>
 
           {/* Accordion — data from FAQ_ITEMS constant */}
@@ -684,8 +793,9 @@ const HomePage = () => {
 
                   {/* Animated answer */}
                   <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-                      }`}
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    }`}
                   >
                     <p className="px-6 pb-6 text-gray-500 text-sm sm:text-base leading-relaxed">
                       {faq.answer}
@@ -726,7 +836,6 @@ const HomePage = () => {
               Message the Community
             </a>
           </div>
-
         </div>
       </section>
 
@@ -738,15 +847,20 @@ const HomePage = () => {
         {/* Glow blobs */}
         <div
           className="absolute top-0 left-0 w-80 h-80 rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 70%)" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 70%)",
+          }}
         />
         <div
           className="absolute bottom-0 right-0 w-96 h-96 rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(99,102,241,0.11) 0%, transparent 70%)" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(99,102,241,0.11) 0%, transparent 70%)",
+          }}
         />
 
         <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
           {/* Left */}
           <div>
             <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-white/10 bg-white/5">
@@ -757,34 +871,41 @@ const HomePage = () => {
             </div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-              Stop{" "}
-              <span className="text-gray-400 line-through">learning.</span>
+              Stop <span className="text-gray-400 line-through">learning.</span>
               <br />
               Start <span className="text-primary-colour">building.</span>
             </h2>
 
             <p className="text-gray-400 text-base md:text-lg leading-relaxed mb-10 max-w-md">
-              Real skills come from real contributions. Open Source Kigali connects
-              you to live projects, active mentors, and a community of builders
-              shaping Rwanda's tech future.
+              Real skills come from real contributions. Open Source Kigali
+              connects you to live projects, active mentors, and a community of
+              builders shaping Rwanda's tech future.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-12">
-              <PrimaryButton to='' >
+              <PrimaryButton to="">
                 Join the Community
-                <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight
+                  size={16}
+                  className="group-hover:translate-x-0.5 transition-transform"
+                />
               </PrimaryButton>
-              <SecondaryButton to=''>
-                View Open Issues
-              </SecondaryButton>
+              <SecondaryButton to="">View Open Issues</SecondaryButton>
             </div>
 
             {/* Stat pills — from CTA_STATS constant */}
             <div className="flex flex-wrap gap-3">
               {CTA_STATS.map((s) => (
-                <div key={s.label} className="px-4 py-2 rounded-full border border-white/10 bg-white/5">
-                  <span className="text-white font-bold text-sm">{s.value}</span>
-                  <span className="text-gray-500 text-sm ml-1.5">{s.label}</span>
+                <div
+                  key={s.label}
+                  className="px-4 py-2 rounded-full border border-white/10 bg-white/5"
+                >
+                  <span className="text-white font-bold text-sm">
+                    {s.value}
+                  </span>
+                  <span className="text-gray-500 text-sm ml-1.5">
+                    {s.label}
+                  </span>
                 </div>
               ))}
             </div>
@@ -796,7 +917,8 @@ const HomePage = () => {
               className="rounded-2xl overflow-hidden border border-white/10"
               style={{
                 background: "#111827",
-                boxShadow: "0 0 0 1px rgba(59,130,246,0.1), 0 32px 64px rgba(0,0,0,0.5)",
+                boxShadow:
+                  "0 0 0 1px rgba(59,130,246,0.1), 0 32px 64px rgba(0,0,0,0.5)",
               }}
             >
               {/* Mac-style header */}
@@ -808,7 +930,9 @@ const HomePage = () => {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                  <span className="text-gray-500 text-xs font-mono">live activity</span>
+                  <span className="text-gray-500 text-xs font-mono">
+                    live activity
+                  </span>
                 </div>
               </div>
 
@@ -818,20 +942,31 @@ const HomePage = () => {
                     key={item.id}
                     className="flex items-start gap-3 px-5 py-4 hover:bg-white/3 transition-colors"
                   >
-                    <div className={`mt-0.5 w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-white ${item.iconBg}`}>
+                    <div
+                      className={`mt-0.5 w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-white ${item.iconBg}`}
+                    >
                       {ACTIVITY_ICONS[item.iconKey]}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-gray-300 text-sm leading-snug">{item.text}</p>
-                      <p className="text-gray-600 text-xs mt-0.5">{item.time}</p>
+                      <p className="text-gray-300 text-sm leading-snug">
+                        {item.text}
+                      </p>
+                      <p className="text-gray-600 text-xs mt-0.5">
+                        {item.time}
+                      </p>
                     </div>
                   </li>
                 ))}
               </ul>
 
               <div className="px-5 py-3.5 border-t border-white/8 bg-white/2 flex items-center justify-between">
-                <span className="text-gray-600 text-xs font-mono">github · opensourcekigali</span>
-                <NavLink to="/community" className="text-blue-400 hover:text-blue-300 text-xs font-medium transition-colors">
+                <span className="text-gray-600 text-xs font-mono">
+                  github · opensourcekigali
+                </span>
+                <NavLink
+                  to="/community"
+                  className="text-blue-400 hover:text-blue-300 text-xs font-medium transition-colors"
+                >
                   View all activity →
                 </NavLink>
               </div>
@@ -839,7 +974,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
     </div>
   );
 };
