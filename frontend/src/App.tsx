@@ -9,12 +9,14 @@ import Resources from "./pages/Resources"
 import RootLayer from "./pages/RootLayer";
 import Partners from "./pages/Partners";
 import Event from "./pages/Event";
+import ErrorPage from "./pages/ErrorPage";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component : RootLayer,
+    ErrorBoundary: ErrorPage,
     children : [
       { index: true, Component: HomePage },
       {path:'/about', Component: About},
