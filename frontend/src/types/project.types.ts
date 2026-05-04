@@ -1,5 +1,5 @@
 export type ProjectStatus   = "active" | "seeking" | "maintenance" | "new";
-export type ProjectCategory = "all" | "platform" | "health" | "education" | "maps" | "tools";
+export type ProjectCategory = string;
 export type DifficultyLevel = "beginner" | "intermediate" | "advanced";
 export type IssueLabel      = "good first issue" | "help wanted" | "bug" | "enhancement";
 
@@ -22,7 +22,7 @@ export interface Issue {
 }
 
 export interface Projects {
-  id:           number;
+  id:           string | number;
   slug:         string;
   status:       ProjectStatus;
   category:     ProjectCategory;

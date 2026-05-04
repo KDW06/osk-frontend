@@ -22,13 +22,12 @@ import {
   Plus,
   Minus,
 } from "lucide-react";
-import { useAutoPlay } from "@/hooks";
-import { PROJECTS, MARQUEE_PARTNERS } from "@/constants";
+import { useAutoPlay, useProjects, useEvents } from "@/hooks";
+import { MARQUEE_PARTNERS } from "@/constants";
 import {
   HERO_STATS,
   CONTRIBUTION_SLIDES,
   EXPLORE_LINKS,
-  HOME_EVENTS,
   TESTIMONIALS,
   CTA_ACTIVITY,
   CTA_STATS,
@@ -118,8 +117,30 @@ const HomePage = () => {
   );
 
   // Projects for homepage (first 4)
-  const homeProjects = PROJECTS.slice(0, 4);
+  const { projects } = useProjects();
+  const homeProjects = projects.slice(0, 4);
   const featuredProject = homeProjects[0];
+
+  // Events for homepage (upcoming, capped at 4)
+  const { events } = useEvents();
+  const homeEvents = events
+    .filter((e) => e.status !== "past")
+    .slice(0, 4)
+    .map((e) => {
+      const type: HomeEventType = e.type === "talk" ? "session" : e.type;
+      return {
+        id:          e.id,
+        type,
+        title:       e.title,
+        date:        e.date,
+        time:        e.time,
+        location:    e.location,
+        description: e.description,
+        tag:         type.charAt(0).toUpperCase() + type.slice(1),
+      };
+    });
+  const featuredHomeEvent = homeEvents[0];
+  const restHomeEvents    = homeEvents.slice(1);
 
   return (
     <div className="font-sans">
@@ -228,32 +249,44 @@ const HomePage = () => {
           </div>
 
           {/* Featured — first project */}
-          <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-lg mb-12 md:flex md:items-stretch border border-gray-100">
-            <div className="md:w-1/2 h-64 sm:h-80 md:h-auto relative">
-              <img
-                src={PROJECT_IMAGES[featuredProject.slug] ?? youthImg}
-                alt={featuredProject.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 md:hidden bg-black opacity-25" />
-            </div>
-            <div className="md:w-1/2 p-6 sm:p-8 md:p-10 flex flex-col justify-center bg-white z-10">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3 text-brand-950">
-                {featuredProject.title}
-              </h3>
-              <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base md:text-lg">
-                {featuredProject.description}
-              </p>
-              <div className="flex gap-3 sm:gap-4 flex-wrap">
-                <PrimaryButton to="" className="w-full md:w-auto">
-                  Contribute
-                </PrimaryButton>
-                <SecondaryButton to="" className="w-full md:w-auto">
-                  View Project
-                </SecondaryButton>
+          {featuredProject && (
+            <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-lg mb-12 md:flex md:items-stretch border border-gray-100">
+              <div className="md:w-1/2 h-64 sm:h-80 md:h-auto relative">
+                <img
+                  src={
+                    featuredProject.image ||
+                    PROJECT_IMAGES[featuredProject.slug] ||
+                    youthImg
+                  }
+                  alt={featuredProject.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 md:hidden bg-black opacity-25" />
+              </div>
+              <div className="md:w-1/2 p-6 sm:p-8 md:p-10 flex flex-col justify-center bg-white z-10">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3 text-brand-950">
+                  {featuredProject.title}
+                </h3>
+                <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base md:text-lg">
+                  {featuredProject.description || featuredProject.tagline}
+                </p>
+                <div className="flex gap-3 sm:gap-4 flex-wrap">
+                  <PrimaryButton
+                    to={featuredProject.repoUrl}
+                    className="w-full md:w-auto"
+                  >
+                    Contribute
+                  </PrimaryButton>
+                  <SecondaryButton
+                    to={featuredProject.liveUrl || featuredProject.repoUrl}
+                    className="w-full md:w-auto"
+                  >
+                    View Project
+                  </SecondaryButton>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Other projects grid — remaining 3 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -264,7 +297,9 @@ const HomePage = () => {
               >
                 <div className="h-48 w-full overflow-hidden">
                   <img
-                    src={PROJECT_IMAGES[project.slug] ?? youthImg}
+                    src={
+                      project.image || PROJECT_IMAGES[project.slug] || youthImg
+                    }
                     alt={project.title}
                     className="w-full h-full object-cover"
                   />
@@ -277,10 +312,13 @@ const HomePage = () => {
                     {project.description}
                   </p>
                   <div className="flex gap-2.5 sm:gap-3 flex-wrap my-3">
-                    <PrimaryButton to="" className="w-full">
+                    <PrimaryButton to={project.repoUrl} className="w-full">
                       Contribute
                     </PrimaryButton>
-                    <SecondaryButton to="" className="w-full">
+                    <SecondaryButton
+                      to={project.liveUrl || project.repoUrl}
+                      className="w-full"
+                    >
                       View Project
                     </SecondaryButton>
                   </div>
@@ -440,33 +478,34 @@ const HomePage = () => {
             </NavLink>
           </div>
 
-          {/* Featured event — first HOME_EVENT */}
+          {/* Featured event */}
+          {featuredHomeEvent && (
           <div className="bg-white rounded-2xl shadow-md overflow-hidden mb-8 border border-gray-100">
             <div className="md:flex">
               <div className="md:w-2/3 p-6 sm:p-8 md:p-10">
                 <span
-                  className={`text-xs font-semibold px-3 py-1 rounded-full ${EVENT_TYPE_STYLES[HOME_EVENTS[0].type]}`}
+                  className={`text-xs font-semibold px-3 py-1 rounded-full ${EVENT_TYPE_STYLES[featuredHomeEvent.type]}`}
                 >
-                  {HOME_EVENTS[0].tag}
+                  {featuredHomeEvent.tag}
                 </span>
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mt-4 mb-3">
-                  {HOME_EVENTS[0].title}
+                  {featuredHomeEvent.title}
                 </h3>
                 <p className="text-gray-500 text-sm sm:text-base mb-6">
-                  {HOME_EVENTS[0].description}
+                  {featuredHomeEvent.description}
                 </p>
                 <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-8">
                   <span className="flex items-center gap-1.5">
                     <Calendar size={14} className="text-blue-500" />{" "}
-                    {HOME_EVENTS[0].date}
+                    {featuredHomeEvent.date}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Clock size={14} className="text-blue-500" />{" "}
-                    {HOME_EVENTS[0].time}
+                    {featuredHomeEvent.time}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <MapPin size={14} className="text-blue-500" />{" "}
-                    {HOME_EVENTS[0].location}
+                    {featuredHomeEvent.location}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-3">
@@ -495,10 +534,11 @@ const HomePage = () => {
               </div>
             </div>
           </div>
+          )}
 
-          {/* Other events grid — from HOME_EVENTS constant */}
+          {/* Other events grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {HOME_EVENTS.slice(1).map((event) => (
+            {restHomeEvents.map((event) => (
               <div
                 key={event.id}
                 className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col hover:shadow-md transition-shadow"

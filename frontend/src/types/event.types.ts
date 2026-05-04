@@ -9,7 +9,8 @@ export interface EventSpeaker {
 }
 
 export interface OSKEvent {
-  id:           number;
+  id:           string | number;
+  endDate?:     string;
   slug:         string;
   type:         EventType;
   status:       EventStatus;

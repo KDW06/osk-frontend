@@ -83,3 +83,67 @@ export function formatViews(count: number): string {
   if (count >= 1000) return `${(count / 1000).toFixed(1)}k`;
   return String(count);
 }
+
+const MONTHS_SHORT = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+const MONTHS_LONG = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December",
+];
+
+/**
+ * Title-case a kebab-case slug. "kigali-community-hub" → "Kigali Community Hub"
+ */
+export function titleFromSlug(slug: string): string {
+  return slug
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+/**
+ * Kebab-case slug from a free-form title.
+ */
+export function slugFromTitle(title: string, fallback = ""): string {
+  const base = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return base || fallback;
+}
+
+/**
+ * Formats a date range for display.
+ */
+export function formatDateRange(start: Date, end: Date | null): {
+  date: string; dateShort: string; day: number; month: string; year: number;
+} {
+  const sDay   = start.getUTCDate();
+  const sMonth = start.getUTCMonth();
+  const sYear  = start.getUTCFullYear();
+  const monthShort = MONTHS_SHORT[sMonth];
+  const monthLong  = MONTHS_LONG[sMonth];
+
+  if (end && (end.getUTCDate() !== sDay || end.getUTCMonth() !== sMonth)) {
+    const eDay = end.getUTCDate();
+    const sameMonth = end.getUTCMonth() === sMonth;
+    return {
+      date:      sameMonth
+        ? `${monthLong} ${sDay}–${eDay}, ${sYear}`
+        : `${monthLong} ${sDay} – ${MONTHS_LONG[end.getUTCMonth()]} ${eDay}, ${sYear}`,
+      dateShort: sameMonth
+        ? `${monthShort.charAt(0)}${monthShort.slice(1).toLowerCase()} ${sDay}–${eDay}`
+        : `${monthShort} ${sDay} – ${MONTHS_SHORT[end.getUTCMonth()]} ${eDay}`,
+      day:   sDay,
+      month: monthShort,
+      year:  sYear,
+    };
+  }
+
+  return {
+    date:      `${monthLong} ${sDay}, ${sYear}`,
+    dateShort: `${monthShort.charAt(0)}${monthShort.slice(1).toLowerCase()} ${sDay}`,
+    day:       sDay,
+    month:     monthShort,
+    year:      sYear,
+  };
+}

@@ -1,10 +1,9 @@
 import { NavLink }          from "react-router";
 import {Github, ArrowUpRight, GitPullRequest, Users, AlertCircle, Star, GitFork, Search, Filter, ExternalLink, Code2, Zap, CheckCircle2, Clock} from "lucide-react";
 import { Badge } from '@/components/UI/';
-import { Card } from "@/components/UI";
-import { SectionLabel } from "@/components/UI";
-import { useFilter } from "@/hooks";
-import { PROJECTS,GOOD_FIRST_ISSUES } from "@/constants";
+import { Card, SectionLabel, Loader } from "@/components/UI";
+import { useFilter, useProjects } from "@/hooks";
+import { GOOD_FIRST_ISSUES } from "@/constants";
 import type { Projects,Issue,ProjectStatus,ProjectCategory } from "@/types";
 import EyebrowLabel from "@/components/UI/EyebrowLable";
 
@@ -280,7 +279,9 @@ const IssueRow = ({ issue }: { issue: Issue }) => (
 
 // ─── Page
 const Projectt = () => {
-  // ── Filter hook — replaces all the inline useState filter logic 
+  const { projects, loading, error } = useProjects();
+
+  // ── Filter hook — replaces all the inline useState filter logic
   const {
     filtered,
     search,
@@ -290,22 +291,20 @@ const Projectt = () => {
     clearAll,
     hasActiveFilters,
   } = useFilter<Projects, { category: ProjectCategory; status: ProjectStatus | "all" }>({
-    items:      PROJECTS,
+    items:      projects,
     searchKeys: ["title", "description", "techStack"],
     filterKeys: ["category", "status"],
   });
 
-  // Debounce the search so filtering doesn't fire on every keystroke
-
-  const featured    = PROJECTS.find((p) => p.featured)!;
+  const featured    = projects.find((p) => p.featured);
   const nonFeatured = filtered.filter((p) => !p.featured);
 
   // Only show featured card when no filters are active
-  const showFeatured = !hasActiveFilters;
+  const showFeatured = !hasActiveFilters && !!featured;
 
-  // Quick stats derived from the full PROJECTS array
-  const totalOpenIssues    = PROJECTS.reduce((a, p) => a + p.stats.openIssues, 0);
-  const totalContributors  = PROJECTS.reduce((a, p) => a + p.stats.contributors, 0);
+  // Quick stats derived from fetched projects
+  const totalOpenIssues    = projects.reduce((a, p) => a + p.stats.openIssues, 0);
+  const totalContributors  = projects.reduce((a, p) => a + p.stats.contributors, 0);
 
   return (
     <>
@@ -349,7 +348,7 @@ const Projectt = () => {
             {/* Stats — derived from PROJECTS constant, always accurate */}
             <div className="grid grid-cols-3 gap-px bg-white/10 rounded-2xl overflow-hidden shrink-0">
               {[
-                { n: PROJECTS.length,    label: "Projects"     },
+                { n: projects.length,    label: "Projects"     },
                 { n: totalOpenIssues,    label: "Open Issues"  },
                 { n: totalContributors,  label: "Contributors" },
               ].map((s) => (
@@ -417,28 +416,40 @@ const Projectt = () => {
       <section className="py-12 px-6 md:px-20 bg-gray-50">
         <div className="max-w-7xl mx-auto">
 
-          {/* Featured card — only when no filters active */}
-          {showFeatured && <FeaturedCard project={featured} />}
-
-          {nonFeatured.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {nonFeatured.map((p) => (
-                <ProjectCard key={p.id} project={p} />
-              ))}
-            </div>
-          ) : (
+          {loading ? (
+            <Loader />
+          ) : error ? (
             <div className="text-center py-24 text-gray-400">
               <Code2 size={36} className="mx-auto mb-4 opacity-30" />
-              <p className="font-semibold text-gray-500">No projects match that filter.</p>
-              <p className="text-sm mt-1 mb-6">Try clearing the search or switching categories.</p>
-              <button
-                onClick={clearAll}
-                className="px-5 py-2.5 rounded-full border text-sm font-semibold transition-colors"
-                style={{ borderColor: "#c5d9ff", color: "#2b7fff" }}
-              >
-                Clear all filters
-              </button>
+              <p className="font-semibold text-red-500">Couldn't load projects.</p>
+              <p className="text-sm mt-1 text-gray-500">{error}</p>
             </div>
+          ) : (
+            <>
+              {/* Featured card — only when no filters active */}
+              {showFeatured && featured && <FeaturedCard project={featured} />}
+
+              {nonFeatured.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {nonFeatured.map((p) => (
+                    <ProjectCard key={p.id} project={p} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-24 text-gray-400">
+                  <Code2 size={36} className="mx-auto mb-4 opacity-30" />
+                  <p className="font-semibold text-gray-500">No projects match that filter.</p>
+                  <p className="text-sm mt-1 mb-6">Try clearing the search or switching categories.</p>
+                  <button
+                    onClick={clearAll}
+                    className="px-5 py-2.5 rounded-full border text-sm font-semibold transition-colors"
+                    style={{ borderColor: "#c5d9ff", color: "#2b7fff" }}
+                  >
+                    Clear all filters
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

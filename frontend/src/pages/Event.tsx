@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { NavLink } from "react-router";
 import {Calendar, Clock, MapPin, Users, ArrowUpRight, ChevronRight,Filter, Play, Mic, Zap,Code2, Globe, CheckCircle2,Bell, ChevronLeft} from "lucide-react";
-import { useFilter } from "@/hooks";
-import { EVENTS } from "@/constants";
-import { AttendeeBar, Badge , SectionLabel} from "@/components/UI";
+import { useFilter, useEvents } from "@/hooks";
+import { AttendeeBar, Badge , SectionLabel, Loader} from "@/components/UI";
 import type {OSKEvent,EventType,} from "@/types";
 import EyebrowLabel from "@/components/UI/EyebrowLable";
 
@@ -381,25 +380,34 @@ const EventCard = ({ event }: { event: OSKEvent }) => {
 
 const Event = () => {
   const [showPast, setShowPast] = useState(false);
+  const { events, loading, error } = useEvents();
 
-  // useFilter on the EVENTS constant — replaces all inline filter state
   const {
     filtered,
     filters,
     setFilter,
   } = useFilter<OSKEvent, { type: EventType | "all" }>({
-    items:      EVENTS,
+    items:      events,
     searchKeys: ["title", "description", "tags"],
     filterKeys: ["type"],
   });
 
-  // Split by status
-  const featured  = EVENTS.find((e) => e.featured)!;
-  const upcoming  = filtered.filter((e) => e.status !== "past" && !e.featured);
-  const past      = EVENTS.filter((e) => e.status === "past");
+  const featured     = events.find((e) => e.featured) ?? events.find((e) => e.status !== "past");
+  const upcoming     = filtered.filter((e) => e.status !== "past" && e.id !== featured?.id);
+  const past         = events.filter((e) => e.status === "past");
+  const upcomingCount = events.filter((e) => e.status !== "past").length;
 
-  // Quick stats derived from the EVENTS constant
-  const upcomingCount = EVENTS.filter((e) => e.status !== "past").length;
+  if (loading) {
+    return <Loader fullPage />;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center text-red-500">
+        Failed to load events: {error}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -447,7 +455,7 @@ const Event = () => {
               <div className="grid grid-cols-3 gap-2">
                 {[
                   { n: upcomingCount,    label: "Upcoming"  },
-                  { n: EVENTS.length,    label: "This year" },
+                  { n: events.length,    label: "This year" },
                   { n: "100+",           label: "Per event" },
                 ].map((s) => (
                   <div
@@ -461,7 +469,7 @@ const Event = () => {
                 ))}
               </div>
 
-              <MiniCalendar events={EVENTS} />
+              <MiniCalendar events={events} />
             </div>
           </div>
 
@@ -492,7 +500,7 @@ const Event = () => {
       <section className="px-6 md:px-20 py-10 bg-white mt-6">
         <div className="max-w-7xl mx-auto">
           <EyebrowLabel text="Next big event" align="left"/>
-          <FeaturedCard event={featured} />
+          {featured && <FeaturedCard event={featured} />}
         </div>
       </section>
 
