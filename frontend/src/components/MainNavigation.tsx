@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { X } from "lucide-react";
@@ -18,6 +18,17 @@ const Navbar = () => {
 
   // 🔥 Determine if navbar should be "light" (white bg + dark text)
   const isLight = !isHome || scrolled;
+
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileOpen]);
 
   return (
     <>
@@ -69,11 +80,7 @@ const Navbar = () => {
           aria-label="Toggle menu"
         >
           {mobileOpen ? (
-            <X
-              className={`w-6 h-6 ${
-                isLight ? "text-gray-900" : "text-white"
-              }`}
-            />
+            <X className={`w-6 h-6 text-gray-900`} />
           ) : (
             <RxHamburgerMenu
               className={`w-6 h-6 transition-colors duration-300 ${
@@ -86,7 +93,7 @@ const Navbar = () => {
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="fixed top-0 left-0 w-full h-screen bg-white z-40 flex flex-col items-center justify-center space-y-6 text-lg">
+        <div className="fixed top-0 left-0 w-full h-screen bg-white z-10 flex flex-col items-center pt-30 space-y-6 text-lg">
           {NAV_LINKS.map((link) => (
             <NavLink
               key={link.path}
@@ -99,9 +106,7 @@ const Navbar = () => {
           ))}
 
           {/* CTA button (mobile) */}
-          <PrimaryButton to="">
-            Contribute to OSK
-          </PrimaryButton>
+          <PrimaryButton to="">Contribute to OSK</PrimaryButton>
         </div>
       )}
     </>
