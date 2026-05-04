@@ -11,6 +11,7 @@ import Resources from "./pages/Resources"
 import RootLayer from "./pages/RootLayer";
 import Partners from "./pages/Partners";
 import Event from "./pages/Event";
+<<<<<<< HEAD
 const MembersForm       = lazy(() => import("./pages/MembersForm"));
 const PartnersForm = lazy(() => import("./pages/PartnersForm"));
 
@@ -19,12 +20,16 @@ const wrap = (Component: ComponentType) => (
     <Component />
   </Suspense>
 );
+=======
+import ErrorPage from "./pages/ErrorPage";
+>>>>>>> origin/main
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component : RootLayer,
+    ErrorBoundary: ErrorPage,
     children : [
       { index: true, Component: HomePage },
       {path:'/about', Component: About},
