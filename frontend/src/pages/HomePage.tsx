@@ -81,6 +81,7 @@ const HomePage = () => {
 
   return (
     <div className="font-sans">
+
       {/*  1. HERO */}
       <section className="relative w-full min-h-screen">
         {/* Background */}
@@ -104,7 +105,7 @@ const HomePage = () => {
           </p>
 
           <div className="flex flex-wrap gap-4 md:gap-6 justify-center md:justify-start mt-16">
-            <PrimaryButton to=''>
+            <PrimaryButton to='/membersform'>
               Join the community
             </PrimaryButton>
             <SecondaryButton to='/about'>
@@ -163,6 +164,7 @@ const HomePage = () => {
         </div>
 
       </section>
+
 
       {/* FEATURED PROJECTS */}
       <section className="py-20 px-4 md:px-20 bg-gray-50">
@@ -307,6 +309,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
 
       {/* EXPLORE / CONNECT */}
       <section className="bg-[#FFF7F5] py-20 px-4 md:px-20">
@@ -556,7 +559,7 @@ const HomePage = () => {
               </h2>
             </div>
             <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <PrimaryButton to='' >
+              <PrimaryButton to='/partnersform' >
                 Become a partner <ArrowUpRight size={14} />
               </PrimaryButton>
               <SecondaryButton to='/partners'>
