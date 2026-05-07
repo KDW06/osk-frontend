@@ -1,6 +1,6 @@
 import { NavLink, Link } from "react-router";
 import { ArrowRight, ArrowUpRight, Users, BookOpen, Briefcase, Globe, CheckCircle, Mail, Building2, GraduationCap, Landmark, Heart } from "lucide-react";
-import { PARTNERS, PARTNER_BENEFITS, PARTNERSHIP_STEPS, PARTNER_STATS, WHAT_WE_LOOK_FOR } from "@/constants";
+import { PARTNERS, PARTNER_BENEFITS, PARTNERSHIP_STEPS,  WHAT_WE_LOOK_FOR } from "@/constants";
 import EyebrowLabel from "../components/UI/EyebrowLable";
 import PartnerMarquee from '@/components/UI/PartnersMarquee';
 import PrimaryButton from "@/components/UI/PrimaryButton";
@@ -51,9 +51,7 @@ const Partners = () => (
           <PrimaryButton to="/partnersform">
             Become a Partner
           </PrimaryButton>
-          <SecondaryButton to="">
-            View Our Partners
-          </SecondaryButton>
+          
         </div>
       </div>
     </section>
@@ -61,7 +59,7 @@ const Partners = () => (
     {/* ── MARQUEE */}
     <PartnerMarquee showSecondary={false} />
 
-    {/* STAT CARDS — from PARTNER_STATS constant */}
+    {/* STAT CARDS — from PARTNER_STATS constant 
     <section className="py-14 px-6 md:px-20 bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-5">
         {PARTNER_STATS.map((s, i) => (
@@ -76,9 +74,10 @@ const Partners = () => (
         ))}
       </div>
     </section>
+    */}
 
     {/* ── PROGRAMME OVERVIEW */}
-    <section className="py-20 px-6 md:px-20 bg-white">
+    <section className="py-20 px-6 md:px-20 bg-white md:mt-16">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
         <div>
@@ -95,7 +94,7 @@ const Partners = () => (
             <strong className="text-gray-900">{PARTNERS.length} organisations</strong>{" "}
             across Rwanda and we're actively looking for more.
           </p>
-          <PrimaryButton to="" className="md:w-1/2">
+          <PrimaryButton to="/partnersform" className="md:w-1/2">
             Partner with Us
           </PrimaryButton>
         </div>
@@ -112,7 +111,7 @@ const Partners = () => (
             },
             {
               icon: <Building2 size={22} className="text-blue-500" />,
-              label: "Companies",
+              label: "Partner Organizations",
               count: PARTNERS.filter((p) => p.category === "company").length,
               bg: "bg-blue-50",
               border: "border-blue-100",
@@ -143,7 +142,7 @@ const Partners = () => (
     </section>
 
     {/* ── INLINE CTA BANNER */}
-    <div className="px-6 md:px-20">
+    <div className="px-6 md:px-20 md:mt-10">
       <div className="max-w-7xl mx-auto">
         <div className="bg-background-colour rounded-2xl px-8 py-7 flex flex-col sm:flex-row items-center justify-between gap-5">
           <div>
@@ -154,7 +153,7 @@ const Partners = () => (
               We respond to all enquiries within 48 hours.
             </p>
           </div>
-          <SecondaryButton to="">
+          <SecondaryButton to="/partnersform">
             Get in touch <ArrowRight size={14} />
           </SecondaryButton>
         </div>
@@ -162,7 +161,7 @@ const Partners = () => (
     </div>
 
     {/* ── BENEFITS — from PARTNER_BENEFITS constant */}
-    <section className="py-20 px-6 md:px-20 bg-white">
+    <section className="py-20 px-6 md:px-20 bg-white md:mt-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
         <div className="lg:sticky lg:top-28">
@@ -176,7 +175,7 @@ const Partners = () => (
             every time.
           </p>
           <Link
-            to=""
+            to="/partnersform"
             className="inline-flex items-center gap-2 text-base font-bold text-primary-colour border-b-2 border-primary-colour pb-0.5 hover:opacity-80 transition-colors"
           >
             Get in touch about a partnership <ArrowRight size={14} />
@@ -287,7 +286,7 @@ const Partners = () => (
             </a>
 
             <NavLink
-              to="/contact"
+              to="/partnersform"
               className="flex items-center gap-4 p-5 rounded-2xl border-2 border-gray-200 hover:border-gray-400 hover:shadow-sm transition-all group bg-white"
             >
               <div className="w-12 h-12 rounded-xl bg-gray-900 flex items-center justify-center shrink-0">

@@ -1,7 +1,7 @@
 import { Twitter, Linkedin, Instagram, Facebook } from "lucide-react";
 import { ABOUT_STATS, STORY_POINTS, VALUES, ABOUT_TEAM } from "@/constants";
 import peopleImg from "@/assets/images/People.jpeg";
-import groupImg from "@/assets/images/group2.png";
+import groupImg from "@/assets/images/did.jpeg.jpeg";
 import EyebrowLabel from "@/components/UI/EyebrowLable";
 import PrimaryButton from "@/components/UI/PrimaryButton";
 import SecondaryButton from "@/components/UI/SecondaryButton";
@@ -73,7 +73,7 @@ const About = () => (
 
         {/* CTAs */}
         <div className="flex flex-wrap gap-4 md:gap-6 justify-center mt-6 mb-14">
-          <PrimaryButton to="" className="w-full md:w-auto">
+          <PrimaryButton to="/membersform" className="w-full md:w-auto">
             Join the Community
           </PrimaryButton>
           <SecondaryButton to="/projects" className="w-full  md:w-auto">
@@ -339,7 +339,7 @@ const About = () => (
           </h2>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 shrink-0">
-          <PrimaryButton to="">Join the Community</PrimaryButton>
+          <PrimaryButton to="/membersform">Join the Community</PrimaryButton>
           <SecondaryButton to="/projects">Browse Projects</SecondaryButton>
         </div>
       </div>
