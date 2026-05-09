@@ -31,12 +31,6 @@ const CODING_LEVELS: { value: CodingLevel; label: string; desc: string }[] = [
   },
 ];
 
-const AFRICAN_COUNTRIES = [
-  "Rwanda", "Kenya", "Uganda", "Tanzania", "Ethiopia",
-  "Nigeria", "Ghana", "South Africa", "Senegal", "Côte d'Ivoire",
-  "Cameroon", "Egypt", "Morocco", "Other",
-];
-
 // ─── Form state type ──────────────────────────────────────────────────────────
 // This is what lives in the form — friendly for the user.
 // It gets mapped to CreateMemberPayload on submit.
@@ -45,8 +39,7 @@ interface MemberFormState {
   firstName:   string;
   lastName:    string;
   email:       string;
-  country:     string;
-  city:        string;
+  orgName:     string;
   github:      string;
   motivation:  string;
   codingLevel: CodingLevel | "";
@@ -56,8 +49,7 @@ const EMPTY: MemberFormState = {
   firstName:   "",
   lastName:    "",
   email:       "",
-  country:     "",
-  city:        "",
+  orgName:     "",
   github:      "",
   motivation:  "",
   codingLevel: "",
@@ -77,8 +69,7 @@ function validate(values: MemberFormState): Errors {
   else if (!/\S+@\S+\.\S+/.test(values.email))
                                    e.email       = "Enter a valid email address";
 
-  if (!values.country)             e.country     = "Please select your country";
-  if (!values.city.trim())         e.city        = "City is required";
+  if (!values.orgName.trim())      e.orgName     = "Please tell us where you study or work";
 
   if (!values.github.trim())       e.github      = "GitHub username is required";
 
@@ -99,7 +90,7 @@ function buildPayload(values: MemberFormState): CreateMemberPayload {
     name:           `${values.firstName.trim()} ${values.lastName.trim()}`,
     email:          values.email.trim(),
     githubUsername: values.github.trim(),
-    orgName:        values.city.trim(),
+    orgName:        values.orgName.trim(),
     joinReason:     values.motivation.trim(),
     codingLevel:    values.codingLevel as CodingLevel,
   };
@@ -321,28 +312,18 @@ const MembersForm = () => {
                     />
                   </FieldWrapper>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <FieldWrapper label="Country" required error={errors.country}>
-                      <select
-                        className={inputClass(!!errors.country) + " cursor-pointer"}
-                        value={values.country}
-                        onChange={(e) => set("country", e.target.value)}
-                      >
-                        <option value="">Select country</option>
-                        {AFRICAN_COUNTRIES.map((c) => (
-                          <option key={c} value={c}>{c}</option>
-                        ))}
-                      </select>
-                    </FieldWrapper>
-                    <FieldWrapper label="City" required error={errors.city}>
-                      <input
-                        className={inputClass(!!errors.city)}
-                        value={values.city}
-                        onChange={(e) => set("city", e.target.value)}
-                        placeholder="Kigali"
-                      />
-                    </FieldWrapper>
-                  </div>
+                  <FieldWrapper
+                    label="Organization"
+                    required
+                    error={errors.orgName}
+                  >
+                    <input
+                      className={inputClass(!!errors.orgName)}
+                      value={values.orgName}
+                      onChange={(e) => set("orgName", e.target.value)}
+                      placeholder="University, high school, or company"
+                    />
+                  </FieldWrapper>
                 </div>
               </div>
 

@@ -11,11 +11,12 @@ import Resources from "./pages/Resources"
 import RootLayer from "./pages/RootLayer";
 import Partners from "./pages/Partners";
 import Event from "./pages/Event";
+import { Loader } from "./components/UI";
 const MembersForm       = lazy(() => import("./pages/MembersForm"));
 const PartnersForm = lazy(() => import("./pages/PartnersForm"));
 
 const wrap = (Component: ComponentType) => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={<Loader fullPage />}>
     <Component />
   </Suspense>
 );
