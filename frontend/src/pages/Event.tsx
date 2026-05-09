@@ -397,18 +397,6 @@ const Event = () => {
   const past         = events.filter((e) => e.status === "past");
   const upcomingCount = events.filter((e) => e.status !== "past").length;
 
-  if (loading) {
-    return <Loader fullPage />;
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center text-red-500">
-        Failed to load events: {error}
-      </div>
-    );
-  }
-
   return (
     <>
       {/* ── Hero */}
@@ -500,7 +488,15 @@ const Event = () => {
       <section className="px-6 md:px-20 py-10 bg-white mt-6">
         <div className="max-w-7xl mx-auto">
           <EyebrowLabel text="Next big event" align="left"/>
-          {featured && <FeaturedCard event={featured} />}
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <div className="text-center py-12 text-red-500 text-sm font-semibold">
+              Failed to load events: {error}
+            </div>
+          ) : (
+            featured && <FeaturedCard event={featured} />
+          )}
         </div>
       </section>
 
@@ -523,7 +519,13 @@ const Event = () => {
             </NavLink>
           </div>
 
-          {upcoming.length > 0 ? (
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <div className="text-center py-12 text-red-500 text-sm font-semibold">
+              Failed to load events: {error}
+            </div>
+          ) : upcoming.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {upcoming.map((e) => <EventCard key={e.id} event={e} />)}
             </div>
@@ -604,11 +606,19 @@ const Event = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {(showPast ? past : past.slice(0, 3)).map((e) => (
-              <EventCard key={e.id} event={e} />
-            ))}
-          </div>
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <div className="text-center py-12 text-red-500 text-sm font-semibold">
+              Failed to load events: {error}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {(showPast ? past : past.slice(0, 3)).map((e) => (
+                <EventCard key={e.id} event={e} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

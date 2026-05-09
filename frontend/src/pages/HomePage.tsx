@@ -7,6 +7,7 @@ import { useAutoPlay, useProjects, useEvents } from "@/hooks";
 import { HERO_STATS,  EXPLORE_LINKS, TESTIMONIALS, CTA_ACTIVITY, CTA_STATS, FAQ_ITEMS,} from "@/constants";
 import type {  HomeEventType, ActivityIconKey} from "@/constants";
 import PartnersMarquee from "@/components/UI/PartnersMarquee";
+import { Loader } from "@/components/UI";
 
 // ── Assets
 import heroImage from "@/assets/images/HeroImage.jpeg";
@@ -82,12 +83,12 @@ const HomePage = () => {
   );
 
   // Projects for homepage (first 4)
-  const { projects } = useProjects();
+  const { projects, loading: projectsLoading, error: projectsError } = useProjects();
   const homeProjects = projects.slice(0, 4);
   const featuredProject = homeProjects[0];
 
   // Events for homepage (upcoming, capped at 4)
-  const { events } = useEvents();
+  const { events, loading: eventsLoading, error: eventsError } = useEvents();
   const homeEvents = events
     .filter((e) => e.status !== "past")
     .slice(0, 4)
@@ -213,6 +214,14 @@ const HomePage = () => {
             </NavLink>
           </div>
 
+          {projectsLoading ? (
+            <Loader />
+          ) : projectsError ? (
+            <div className="text-center py-12 text-red-500 text-sm font-semibold">
+              Failed to load projects: {projectsError}
+            </div>
+          ) : (
+          <>
           {/* Featured — first project */}
           {featuredProject && (
             <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-lg mb-12 md:flex md:items-stretch border border-gray-100">
@@ -291,10 +300,12 @@ const HomePage = () => {
               </div>
             ))}
           </div>
+          </>
+          )}
         </div>
       </section>
 
-      {/* CONTRIBUTION SECTION 
+      {/* CONTRIBUTION SECTION
       <section className="py-20 px-4 md:px-20 text-center bg-white">
         <div className="max-w-7xl mx-auto">
           <EyebrowLabel text="Ways to Contribute" />
@@ -444,6 +455,14 @@ const HomePage = () => {
             </NavLink>
           </div>
 
+          {eventsLoading ? (
+            <Loader />
+          ) : eventsError ? (
+            <div className="text-center py-12 text-red-500 text-sm font-semibold">
+              Failed to load events: {eventsError}
+            </div>
+          ) : (
+          <>
           {/* Featured event */}
           {featuredHomeEvent && (
           <div className="bg-white rounded-2xl shadow-md overflow-hidden mb-8 border border-gray-100">
@@ -542,6 +561,8 @@ const HomePage = () => {
               </div>
             ))}
           </div>
+          </>
+          )}
         </div>
       </section>
 
