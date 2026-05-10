@@ -1,9 +1,7 @@
-import { useState }          from "react";
-import { NavLink }           from "react-router";
-import { ArrowRight,
-         CheckCircle2,
-         AlertCircle }       from "lucide-react";
-import { post }              from "@/lib/api";
+import { useState } from "react";
+import { NavLink } from "react-router";
+import { ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
+import { post }  from "@/lib/api";
 import type {
   CreateMemberPayload,
   ApiMember,

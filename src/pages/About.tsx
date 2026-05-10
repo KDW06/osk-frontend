@@ -1,6 +1,4 @@
-
 import { FaXTwitter, FaLinkedinIn, FaInstagram, FaFacebookF, FaGithub, FaFigma } from "react-icons/fa6";
-
 import { ABOUT_STATS, STORY_POINTS, VALUES, ABOUT_TEAM } from "@/constants";
 import peopleImg from "@/assets/images/People.jpeg";
 import groupImg from "@/assets/images/did.jpeg.jpeg";

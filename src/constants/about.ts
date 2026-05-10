@@ -87,7 +87,7 @@ export const ABOUT_TEAM = [
     initials: "OL",
     bg:       "bg-emerald-500",
     avatar:   zaraImg,
-    featured: true,
+    featured: false,
     objectPosition: "50% 20%",   
     links: {
       linkedin:  null,
@@ -189,7 +189,7 @@ export const ABOUT_TEAM = [
     initials: "PL",
     bg:       "bg-cyan-500",
     avatar:   kingImg,
-    featured: true,
+    featured: false,
     objectPosition: "top",   
     links: {
       linkedin:  "https://www.linkedin.com/in/ariweriokuma-king-son",
