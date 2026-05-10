@@ -1,6 +1,5 @@
+const BASE = import.meta.env.VITE_API_BASE_URL;
 
-
-const BASE = "https://osk-backend.onrender.com/api";
 
 export async function post<T>(path: string, body: unknown): Promise<T> {
   const response = await fetch(`${BASE}${path}`, {
@@ -18,10 +17,7 @@ export async function post<T>(path: string, body: unknown): Promise<T> {
   return json.data;
 }
 
-// ── Multipart form data — used when the request includes a file upload ─────────
-// We do NOT set Content-Type manually here.
-// When you pass a FormData object to fetch, the browser sets it automatically
-// including the correct boundary string. Setting it manually breaks the upload.
+
 
 export async function postForm<T>(path: string, form: FormData): Promise<T> {
   const response = await fetch(`${BASE}${path}`, {
