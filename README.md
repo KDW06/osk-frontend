@@ -166,13 +166,7 @@ npm run typecheck  # Run TypeScript checks
 We welcome contributions from developers, designers, writers,
 and open-source enthusiasts of all skill levels.
 
-Please read:
-
-```bash
-CONTRIBUTING.md
-```
-
-before opening a pull request.
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request.
 
 ---
 
